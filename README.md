@@ -70,10 +70,6 @@ FROM Diario\\\_Contable;
 
 
 
-!\[Estado de Pérdidas y Ganancias](dashboard.png)
-
-
-
 Data is ingested via direct PostgreSQL connection using Import Mode for optimal performance.
 
 ### Core DAX Measures
@@ -111,6 +107,12 @@ COALESCE(Ingreso, 0) - COALESCE(Gasto, 0)
 * **Executive KPI Cards:** Instant visibility into Net Income / Loss.
 * **Hierarchical P\&L Matrix:** Drill-down capability from Group to individual Account levels.
 * **Waterfall Chart:** Financial bridge visual tracking revenue gains against operational expenses.
+
+
+
+!\[Estado de Pérdidas y Ganancias](dashboard.png)
+
+
 
 \---
 
