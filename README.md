@@ -22,14 +22,14 @@ The primary objective is to simulate an enterprise-grade Accounting Information 
 
 The database schema is built using a strict star-schema layout to optimize analytical queries and DAX measure performance:
 
-1. **`Diario\_Contable` (Fact Table):** Contains transactional journal entries with debit/credit balance constraints (`debe >= 0 AND haber >= 0`).
-2. **`Cuentas\_PGC` (Dimension Table):** Hierarchical mapping of chart of accounts (Grupo, Subgrupo, Cuenta).
+1. **`Diario\\\_Contable` (Fact Table):** Contains transactional journal entries with debit/credit balance constraints (`debe >= 0 AND haber >= 0`).
+2. **`Cuentas\\\_PGC` (Dimension Table):** Hierarchical mapping of chart of accounts (Grupo, Subgrupo, Cuenta).
 3. **`Terceros` (Dimension Table):** Master record of clients, vendors, and third parties.
 
 ### Relational Schema (ERD Logic)
 
 ```
-\[Cuentas\_PGC] (1) ─── (N) \[Diario\_Contable] (N) ─── (1) \[Terceros]
+\\\[Cuentas\\\_PGC] (1) ─── (N) \\\[Diario\\\_Contable] (N) ─── (1) \\\[Terceros]
 ```
 
 \---
@@ -42,13 +42,13 @@ To ensure no unbalanced journal entries exist in the system, an automated audit 
 
 ```sql
 SELECT 
-    num\_asiento AS "Asiento",
+    num\\\_asiento AS "Asiento",
     SUM(debe) AS "Total Debe (€)",
     SUM(haber) AS "Total Haber (€)",
     (SUM(debe) - SUM(haber)) AS "Descuadre (€)"
-FROM Diario\_Contable
-GROUP BY num\_asiento
-ORDER BY num\_asiento;
+FROM Diario\\\_Contable
+GROUP BY num\\\_asiento
+ORDER BY num\\\_asiento;
 ```
 
 ### 2\. Quarterly VAT Tax Settlement (Modelo 303)
@@ -57,18 +57,18 @@ Calculates output VAT (Account 477) minus input VAT (Account 472) to determine n
 
 ```sql
 SELECT 
-    SUM(CASE WHEN codigo\_cuenta = '4770000' THEN haber - debe ELSE 0 END) AS "IVA Repercutido (€)",
-    SUM(CASE WHEN codigo\_cuenta = '4720000' THEN debe - haber ELSE 0 END) AS "IVA Soportado (€)",
-    SUM(CASE WHEN codigo\_cuenta = '4770000' THEN haber - debe ELSE 0 END) - 
-    SUM(CASE WHEN codigo\_cuenta = '4720000' THEN debe - haber ELSE 0 END) AS "Resultado Liquidación (€)"
-FROM Diario\_Contable;
+    SUM(CASE WHEN codigo\\\_cuenta = '4770000' THEN haber - debe ELSE 0 END) AS "IVA Repercutido (€)",
+    SUM(CASE WHEN codigo\\\_cuenta = '4720000' THEN debe - haber ELSE 0 END) AS "IVA Soportado (€)",
+    SUM(CASE WHEN codigo\\\_cuenta = '4770000' THEN haber - debe ELSE 0 END) - 
+    SUM(CASE WHEN codigo\\\_cuenta = '4720000' THEN debe - haber ELSE 0 END) AS "Resultado Liquidación (€)"
+FROM Diario\\\_Contable;
 ```
 
 \---
 
 ## 📊 Power BI Analytics \& DAX Formulas
 
-!\[Estado de Pérdidas y Ganancias](dashboard.png)
+
 
 Data is ingested via direct PostgreSQL connection using Import Mode for optimal performance.
 
@@ -78,24 +78,24 @@ Data is ingested via direct PostgreSQL connection using Import Mode for optimal 
 // Total Revenues (Group 7 PGC)
 Total Ingresos = 
 CALCULATE(
-    SUM(Diario\_Contable\[haber]) - SUM(Diario\_Contable\[debe]),
-    Cuentas\_PGC\[grupo] = "7"
+    SUM(Diario\\\_Contable\\\[haber]) - SUM(Diario\\\_Contable\\\[debe]),
+    Cuentas\\\_PGC\\\[grupo] = "7"
 )
 
 // Total Expenses (Group 6 PGC)
 Total Gastos = 
 CALCULATE(
-    SUM(Diario\_Contable\[debe]) - SUM(Diario\_Contable\[haber]),
-    Cuentas\_PGC\[grupo] = "6"
+    SUM(Diario\\\_Contable\\\[debe]) - SUM(Diario\\\_Contable\\\[haber]),
+    Cuentas\\\_PGC\\\[grupo] = "6"
 )
 
 // Net Financial Result
-Resultado del Ejercicio = \[Total Ingresos] - \[Total Gastos]
+Resultado del Ejercicio = \\\[Total Ingresos] - \\\[Total Gastos]
 
-// Single-Column P\&L Impact Measure
-Monto P\&G = 
-VAR Ingreso = \[Total Ingresos]
-VAR Gasto = \[Total Gastos]
+// Single-Column P\\\&L Impact Measure
+Monto P\\\&G = 
+VAR Ingreso = \\\[Total Ingresos]
+VAR Gasto = \\\[Total Gastos]
 RETURN
 COALESCE(Ingreso, 0) - COALESCE(Gasto, 0)
 ```
@@ -107,6 +107,7 @@ COALESCE(Ingreso, 0) - COALESCE(Gasto, 0)
 * **Executive KPI Cards:** Instant visibility into Net Income / Loss.
 * **Hierarchical P\&L Matrix:** Drill-down capability from Group to individual Account levels.
 * **Waterfall Chart:** Financial bridge visual tracking revenue gains against operational expenses.
+* !\[Estado de Pérdidas y Ganancias](dashboard.png)
 
 \---
 
@@ -120,10 +121,10 @@ COALESCE(Ingreso, 0) - COALESCE(Gasto, 0)
 
 2. **Execute Database Setup:**
 
-   * Run `scripts/01\_schema.sql` in PostgreSQL via DBeaver.
-   * Run `scripts/02\_sample\_data.sql` to populate sample accounting records.
+   * Run `scripts/01\\\_schema.sql` in PostgreSQL via DBeaver.
+   * Run `scripts/02\\\_sample\\\_data.sql` to populate sample accounting records.
 3. **Open Power BI Dashboard:**
 
-   * Open `reports/Financial\_Dashboard.pbix`.
+   * Open `reports/Financial\\\_Dashboard.pbix`.
    * Update credentials under Data Source Settings (`localhost`, database name, username `postgres`).
 
