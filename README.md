@@ -106,15 +106,18 @@ COALESCE(Ingreso, 0) - COALESCE(Gasto, 0)
 
 * **Executive KPI Cards:** Instant visibility into Net Income / Loss.
 * **Hierarchical P\&L Matrix:** Drill-down capability from Group to individual Account levels.
-* **Waterfall Chart:** Financial bridge visual tracking revenue gains against operational expenses.
+
+**\* Waterfall Chart: Financial bridge visual tracking revenue gains against operational expenses.**
 
 
 
-!\[Estado de Pérdidas y Ganancias](dashboard.png)
+**<img src="dashboard.png" alt="Estado de Pérdidas y Ganancias" width="100%">**
 
 
 
-\---
+**---**
+
+
 
 ## 🚀 How to Run Locally
 
