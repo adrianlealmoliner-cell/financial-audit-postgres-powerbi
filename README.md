@@ -194,6 +194,7 @@ COALESCE(Ingreso, 0) - COALESCE(Gasto, 0)
 
 
 
+<<<<<<< HEAD
 **1. Clone Repository:**
 
 
@@ -237,6 +238,10 @@ Update credentials under Data Source Settings (localhost, database name, usernam
 
 
 * \*\*Power BI Layer\*\*: Direct connection to SQL views using conditional DAX metrics for executive Financial Statement reporting (P\&L Waterfall \& Balance Sheet Matrix).
+=======
+- **PostgreSQL Layer:** Relational schema supporting full double-entry bookkeeping with dynamic foreign key references, transactional ledger (`Diario_Contable`), and automated accounting views (`vw_balance_situacion`) with year-end closing logic & (`vw_perdidas_y_ganancias`).
+- **Power BI Layer:** Direct connection to SQL views using conditional DAX metrics for executive Financial Statement reporting (P&L Waterfall & Balance Sheet Matrix).
+>>>>>>> e4db5f733edf2f1de06c993e0429355801f89292
 
 
 
