@@ -146,8 +146,8 @@ COALESCE(Ingreso, 0) - COALESCE(Gasto, 0)
 
 
 
-* \*\*PostgreSQL Layer:\*\* Relational schema supporting full double-entry bookkeeping with dynamic foreign key references, transactional ledger (`Diario\_Contable`), and automated accounting views (`vw\_balance\_situacion` with year-end closing logic \& `vw\_perdidas\_y\_ganancias`).
-* Power BI Layer:\*\* Direct connection to SQL views using conditional DAX metrics for executive Financial Statement reporting (P\&L Waterfall \& Balance Sheet Matrix).
+**PostgreSQL Layer:** Relational schema supporting full double-entry bookkeeping with dynamic foreign key references, transactional ledger (`Diario\_Contable`), and automated accounting views (`vw\_balance\_situacion` with year-end closing logic \& `vw\_perdidas\_y\_ganancias`).
+**Power BI Layer:** Direct connection to SQL views using conditional DAX metrics for executive Financial Statement reporting (P\&L Waterfall \& Balance Sheet Matrix).
 
 
 
