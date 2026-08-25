@@ -143,7 +143,11 @@ COALESCE(Ingreso, 0) - COALESCE(Gasto, 0)
 
 
 
+<<<<<<< HEAD
 * **PostgreSQL Layer**: Relational schema supporting full double-entry bookkeeping with dynamic foreign key references, transactional ledger (`Diario_Contable`), and automated accounting views (`vw_balance_situacion`) with year-end closing logic & (`vw_perdidas_y_ganancias`).
+=======
+* **PostgreSQL Layer**: Relational schema supporting full double-entry bookkeeping with dynamic foreign key references, transactional ledger (Diario_Contable), and automated accounting views (vw_balance_situacion) with year-end closing logic & (vw_perdidas_y_ganancias).
+>>>>>>> 69b1e4ccf992b2f26bcb4688e4bb0e3b95cf3a40
 
 
 
