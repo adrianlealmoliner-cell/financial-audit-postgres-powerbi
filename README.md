@@ -108,7 +108,7 @@ COALESCE(Ingreso, 0) - COALESCE(Gasto, 0)
 
 &#x20;	
 
-### 📈 Income Statement (P\&L)
+### 📈 Income Statement (P&L)
 
 <img src="dashboard.png" alt="Estado de Pérdidas y Ganancias" width="100%">
 
@@ -127,7 +127,7 @@ COALESCE(Ingreso, 0) - COALESCE(Gasto, 0)
 1. **Clone Repository:**
 
 ```bash
-   git clone https://github.com/your-username/financial-audit-postgres-powerbi.git
+   git clone https://github.com/adrianlealmoliner-cell/financial-audit-postgres-powerbi.git
    ```
 
 2. **Execute Database Setup:**
