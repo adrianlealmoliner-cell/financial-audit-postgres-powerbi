@@ -18,26 +18,26 @@ INSERT INTO Terceros (nif, razon_social, tipo_tercero) VALUES
 ('Q2826000H', 'Agencia Tributaria (AEAT)', 'Otro')
 ON CONFLICT (nif) DO NOTHING;
 
--- 3. Asientos Contables Complejos (Diario Contable)
+-- 3. Asientos Contables Complejos (Diario Contable con búsqueda dinámica por NIF)
 
 -- Asiento 3: Aportación inicial de Capital en Banco (01/10/2026)
 INSERT INTO Diario_Contable (num_asiento, fecha, codigo_cuenta, debe, haber, id_tercero, concepto) VALUES
-(3, '2026-10-01', '5720000', 50000.00, 0.00, 3, 'Aportación inicial socios'),
+(3, '2026-10-01', '5720000', 50000.00, 0.00, (SELECT id_tercero FROM Terceros WHERE nif = 'A00000000'), 'Aportación inicial socios'),
 (3, '2026-10-01', '1000000', 0.00, 50000.00, NULL, 'Constitución Capital Social');
 
 -- Asiento 4: Compra de Maquinaria al contado (02/10/2026)
 INSERT INTO Diario_Contable (num_asiento, fecha, codigo_cuenta, debe, haber, id_tercero, concepto) VALUES
-(4, '2026-10-02', '2130000', 10000.00, 0.00, 2, 'Adquisición maquinaria industrial'),
-(4, '2026-10-02', '4720000', 2100.00, 0.00, 2, '21% IVA soportado compra maquinaria'),
-(4, '2026-10-02', '5720000', 0.00, 12100.00, 3, 'Pago por transferencia compra maquinaria');
+(4, '2026-10-02', '2130000', 10000.00, 0.00, (SELECT id_tercero FROM Terceros WHERE nif = 'A98765432'), 'Adquisición maquinaria industrial'),
+(4, '2026-10-02', '4720000', 2100.00, 0.00, (SELECT id_tercero FROM Terceros WHERE nif = 'A98765432'), '21% IVA soportado compra maquinaria'),
+(4, '2026-10-02', '5720000', 0.00, 12100.00, (SELECT id_tercero FROM Terceros WHERE nif = 'A00000000'), 'Pago por transferencia compra maquinaria');
 
 -- Asiento 5: Devengo de Nómina mensual (31/10/2026)
 INSERT INTO Diario_Contable (num_asiento, fecha, codigo_cuenta, debe, haber, id_tercero, concepto) VALUES
 (5, '2026-10-31', '6400000', 3000.00, 0.00, NULL, 'Sueldos brutos plantilla'),
-(5, '2026-10-31', '6420000', 900.00, 0.00, 4, 'Seguridad Social cuota patronal'),
-(5, '2026-10-31', '4751000', 0.00, 450.00, 5, 'Retención IRPF empleados'),
-(5, '2026-10-31', '4760000', 0.00, 1150.00, 4, 'Cuotas SS a ingresar'),
-(5, '2026-10-31', '5720000', 0.00, 2300.00, 3, 'Pago nóminas netas por banco');
+(5, '2026-10-31', '6420000', 900.00, 0.00, (SELECT id_tercero FROM Terceros WHERE nif = 'G88888888'), 'Seguridad Social cuota patronal'),
+(5, '2026-10-31', '4751000', 0.00, 450.00, (SELECT id_tercero FROM Terceros WHERE nif = 'Q2826000H'), 'Retención IRPF empleados'),
+(5, '2026-10-31', '4760000', 0.00, 1150.00, (SELECT id_tercero FROM Terceros WHERE nif = 'G88888888'), 'Cuotas SS a ingresar'),
+(5, '2026-10-31', '5720000', 0.00, 2300.00, (SELECT id_tercero FROM Terceros WHERE nif = 'A00000000'), 'Pago nóminas netas por banco');
 
 -- Asiento 6: Amortización mensual de Maquinaria (31/10/2026)
 INSERT INTO Diario_Contable (num_asiento, fecha, codigo_cuenta, debe, haber, id_tercero, concepto) VALUES
