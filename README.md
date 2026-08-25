@@ -29,7 +29,7 @@ The database schema is built using a strict star-schema layout to optimize analy
 ### **Relational Schema (ERD Logic)**
 
 ```
-[Cuentas_PGC] (1) ─── (N) [Diario\_Contable] (N) ─── (1) [Terceros]
+[Cuentas_PGC] (1) ─── (N) [Diario_Contable] (N) ─── (1) [Terceros]
 ```
 
 ---
@@ -90,7 +90,7 @@ CALCULATE(
 // Net Financial Result
 Resultado del Ejercicio = [Total Ingresos] - [Total Gastos]
 
-// Single-Column P\&L Impact Measure
+// Single-Column P&L Impact Measure
 Monto P&G = 
 VAR Ingreso = [Total Ingresos]
 VAR Gasto = [Total Gastos]
@@ -145,7 +145,7 @@ COALESCE(Ingreso, 0) - COALESCE(Gasto, 0)
 
 
 
-* **PostgreSQL Layer**: Relational schema supporting full double-entry bookkeeping with dynamic foreign key references, transactional ledger (Diario_Contable), and automated accounting views (vw_balance_situacion with year-end closing logic & vw_perdidas_y_ganancias).
+* **PostgreSQL Layer**: Relational schema supporting full double-entry bookkeeping with dynamic foreign key references, transactional ledger (Diario_Contable), and automated accounting views (vw_balance_situacion) with year-end closing logic & (vw_perdidas_y_ganancias).
 
 
 
