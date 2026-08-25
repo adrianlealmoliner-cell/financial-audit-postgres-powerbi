@@ -66,7 +66,7 @@ FROM Diario_Contable;
 
 ---
 
-## 📊 **Power BI Analytics \& DAX Formulas**
+## 📊 **Power BI Analytics & DAX Formulas**
 
 Data is ingested via direct PostgreSQL connection using Import Mode for optimal performance.
 
@@ -106,8 +106,6 @@ COALESCE(Ingreso, 0) - COALESCE(Gasto, 0)
 * **Hierarchical P&L Matrix:** Drill-down capability from Group to individual Account levels.
 * **Waterfall Chart:** Financial bridge visual tracking revenue gains against operational expenses.
 
-&#x20;	
-
 ### 📈 Income Statement (P&L)
 
 <img src="dashboard.png" alt="Estado de Pérdidas y Ganancias" width="100%">
@@ -141,7 +139,7 @@ COALESCE(Ingreso, 0) - COALESCE(Gasto, 0)
 
 
 
-## 📊 **Financial Data Architecture \& Data Models**
+## 📊 **Financial Data Architecture & Data Models**
 
 
 
