@@ -1,54 +1,54 @@
-# Financial \& Accounting Audit Dashboard (PostgreSQL + Power BI)
+# Financial & Accounting Audit Dashboard (PostgreSQL + Power BI)
 
 ## 📌 Project Overview
 
 This project presents an end-to-end financial data pipeline and interactive business intelligence dashboard modeled after the Spanish **Plan General Contable (PGC)**. It demonstrates robust ETL processes, relational data integrity enforcement in **PostgreSQL**, and financial reporting using **Power BI** and **DAX**.
 
-The primary objective is to simulate an enterprise-grade Accounting Information System (AIS) capable of automated double-entry verification, quarterly VAT tax estimation (Modelo 303), and dynamic Income Statement (P\&L) rendering.
+The primary objective is to simulate an enterprise-grade Accounting Information System (AIS) capable of automated double-entry verification, quarterly VAT tax estimation (Modelo 303), and dynamic Income Statement (P&L) rendering.
 
-\---
+---
 
-## 🛠️ Tech Stack \& Architecture
+## 🛠️ Tech Stack & Architecture
 
 * **Database Engine:** PostgreSQL 16+
 * **Database Client:** DBeaver
-* **Business Intelligence \& Analytics:** Power BI Desktop (VertiPaq Engine)
-* **Languages:** SQL (Data Definition \& Manipulation), DAX (Data Analysis Expressions)
+* **Business Intelligence & Analytics:** Power BI Desktop (VertiPaq Engine)
+* **Languages:** SQL (Data Definition & Manipulation), DAX (Data Analysis Expressions)
 * **Data Architecture:** Star Schema (1 Fact Table, 2 Dimension Tables)
 
-\---
+---
 
-## 📐 Data Model \& Schema Design
+## 📐 Data Model & Schema Design
 
 The database schema is built using a strict star-schema layout to optimize analytical queries and DAX measure performance:
 
-1. **`Diario\_Contable` (Fact Table):** Contains transactional journal entries with debit/credit balance constraints (`debe >= 0 AND haber >= 0`).
-2. **`Cuentas\_PGC` (Dimension Table):** Hierarchical mapping of chart of accounts (Grupo, Subgrupo, Cuenta).
+1. **`Diario_Contable` (Fact Table):** Contains transactional journal entries with debit/credit balance constraints (`debe >= 0 AND haber >= 0`).
+2. **`Cuentas_PGC` (Dimension Table):** Hierarchical mapping of chart of accounts (Grupo, Subgrupo, Cuenta).
 3. **`Terceros` (Dimension Table):** Master record of clients, vendors, and third parties.
 
 ### **Relational Schema (ERD Logic)**
 
 ```
-\[Cuentas\_PGC] (1) ─── (N) \[Diario\_Contable] (N) ─── (1) \[Terceros]
+[Cuentas_PGC] (1) ─── (N) [Diario\_Contable] (N) ─── (1) [Terceros]
 ```
 
-\---
+---
 
-## ⚙️ **SQL Implementation \& Audit Queries**
+## ⚙️ **SQL Implementation & Audit Queries**
 
-### **1. Data Integrity \& Double-Entry Verification**
+### **1. Data Integrity & Double-Entry Verification**
 
 To ensure no unbalanced journal entries exist in the system, an automated audit query verifies that `SUM(debe) - SUM(haber) = 0` per journal entry ID:
 
 ```sql
 SELECT 
-    num\_asiento AS "Asiento",
+    num_asiento AS "Asiento",
     SUM(debe) AS "Total Debe (€)",
     SUM(haber) AS "Total Haber (€)",
     (SUM(debe) - SUM(haber)) AS "Descuadre (€)"
-FROM Diario\_Contable
-GROUP BY num\_asiento
-ORDER BY num\_asiento;
+FROM Diario_Contable
+GROUP BY num_asiento
+ORDER BY num_asiento;
 ```
 
 ### **2. Quarterly VAT Tax Settlement (Modelo 303)**
@@ -57,14 +57,14 @@ Calculates output VAT (Account 477) minus input VAT (Account 472) to determine n
 
 ```sql
 SELECT 
-    SUM(CASE WHEN codigo\_cuenta = '4770000' THEN haber - debe ELSE 0 END) AS "IVA Repercutido (€)",
-    SUM(CASE WHEN codigo\_cuenta = '4720000' THEN debe - haber ELSE 0 END) AS "IVA Soportado (€)",
-    SUM(CASE WHEN codigo\_cuenta = '4770000' THEN haber - debe ELSE 0 END) - 
-    SUM(CASE WHEN codigo\_cuenta = '4720000' THEN debe - haber ELSE 0 END) AS "Resultado Liquidación (€)"
-FROM Diario\_Contable;
+    SUM(CASE WHEN codigo_cuenta = '4770000' THEN haber - debe ELSE 0 END) AS "IVA Repercutido (€)",
+    SUM(CASE WHEN codigo_cuenta = '4720000' THEN debe - haber ELSE 0 END) AS "IVA Soportado (€)",
+    SUM(CASE WHEN codigo_cuenta = '4770000' THEN haber - debe ELSE 0 END) - 
+    SUM(CASE WHEN codigo_cuenta = '4720000' THEN debe - haber ELSE 0 END) AS "Resultado Liquidación (€)"
+FROM Diario_Contable;
 ```
 
-\---
+---
 
 ## 📊 **Power BI Analytics \& DAX Formulas**
 
@@ -76,51 +76,51 @@ Data is ingested via direct PostgreSQL connection using Import Mode for optimal 
 // Total Revenues (Group 7 PGC)
 Total Ingresos = 
 CALCULATE(
-    SUM(Diario\_Contable\[haber]) - SUM(Diario\_Contable\[debe]),
-    Cuentas\_PGC\[grupo] = "7"
+    SUM(Diario_Contable[haber]) - SUM(Diario_Contable[debe]),
+    Cuentas_PGC[grupo] = "7"
 )
 
 // Total Expenses (Group 6 PGC)
 Total Gastos = 
 CALCULATE(
-    SUM(Diario\_Contable\[debe]) - SUM(Diario\_Contable\[haber]),
-    Cuentas\_PGC\[grupo] = "6"
+    SUM(Diario_Contable[debe]) - SUM(Diario_Contable[haber]),
+    Cuentas_PGC[grupo] = "6"
 )
 
 // Net Financial Result
-Resultado del Ejercicio = \[Total Ingresos] - \[Total Gastos]
+Resultado del Ejercicio = [Total Ingresos] - [Total Gastos]
 
 // Single-Column P\&L Impact Measure
-Monto P\&G = 
-VAR Ingreso = \[Total Ingresos]
-VAR Gasto = \[Total Gastos]
+Monto P&G = 
+VAR Ingreso = [Total Ingresos]
+VAR Gasto = [Total Gastos]
 RETURN
 COALESCE(Ingreso, 0) - COALESCE(Gasto, 0)
 ```
 
-\---
+---
 
-## 🚀 **Key Visuals \& Features**
+## 🚀 **Key Visuals & Features**
 
 * **Executive KPI Cards:** Instant visibility into Net Income / Loss.
-* **Hierarchical P\&L Matrix:** Drill-down capability from Group to individual Account levels.
+* **Hierarchical P&L Matrix:** Drill-down capability from Group to individual Account levels.
 * **Waterfall Chart:** Financial bridge visual tracking revenue gains against operational expenses.
 
 &#x20;	
 
-\### 📈 Income Statement (P\&L)
+### 📈 Income Statement (P\&L)
 
 <img src="dashboard.png" alt="Estado de Pérdidas y Ganancias" width="100%">
 
 
 
-\### ⚖️ Balance Sheet Matrix
+### ⚖️ Balance Sheet Matrix
 
 <img src="balance.png" alt="Balance de Situación" width="100%">
 
 
 
-\---
+---
 
 ## 🚀 **How to Run Locally**
 
@@ -132,11 +132,11 @@ COALESCE(Ingreso, 0) - COALESCE(Gasto, 0)
 
 2. **Execute Database Setup:**
 
-   * Run `scripts/01\_schema.sql` in PostgreSQL via DBeaver.
-   * Run `scripts/02\_sample\_data.sql` to populate sample accounting records.
+   * Run `scripts/01_schema.sql` in PostgreSQL via DBeaver.
+   * Run `scripts/02_sample_data.sql` to populate sample accounting records.
 3. **Open Power BI Dashboard:**
 
-   * Open `reports/Financial\_Dashboard.pbix`.
+   * Open `reports/Financial_Dashboard.pbix`.
    * Update credentials under Data Source Settings (`localhost`, database name, username `postgres`).
 
 
@@ -145,9 +145,9 @@ COALESCE(Ingreso, 0) - COALESCE(Gasto, 0)
 
 
 
-* **PostgreSQL Layer**: Relational schema supporting full double-entry bookkeeping with dynamic foreign key references, transactional ledger (Diario\_Contable), and automated accounting views (vw\_balance\_situacion with year-end closing logic \& vw\_perdidas\_y\_ganancias).
+* **PostgreSQL Layer**: Relational schema supporting full double-entry bookkeeping with dynamic foreign key references, transactional ledger (Diario_Contable), and automated accounting views (vw_balance_situacion with year-end closing logic & vw_perdidas_y_ganancias).
 
 
 
-* **Power BI Layer**: Direct connection to SQL views using conditional DAX metrics for executive Financial Statement reporting (P\&L Waterfall \& Balance Sheet Matrix).
+* **Power BI Layer**: Direct connection to SQL views using conditional DAX metrics for executive Financial Statement reporting (P&L Waterfall & Balance Sheet Matrix).
 
