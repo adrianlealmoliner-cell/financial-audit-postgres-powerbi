@@ -127,6 +127,7 @@ VAR PasivoCorriente =
         vw_balance_situacion[masa_patrimonial] = "PASIVO_Y_PN"
     )
 RETURN DIVIDE(ActivoCorriente, PasivoCorriente, 0)
+```
 ---
 
 ## 🚀 **Key Visuals & Features**
