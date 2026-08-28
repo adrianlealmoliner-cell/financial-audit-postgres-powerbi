@@ -97,7 +97,36 @@ VAR Gasto = [Total Gastos]
 RETURN
 COALESCE(Ingreso, 0) - COALESCE(Gasto, 0)
 ```
+### **Advanced Financial KPIs (Profitability & Liquidity)**
 
+```dax
+// Return on Assets (ROA)
+ROA = 
+VAR BeneficioNeto = [Resultado del Ejercicio]
+VAR ActivoTotal = CALCULATE([Saldo Balance (€)], vw_balance_situacion[masa_patrimonial] = "ACTIVO")
+RETURN DIVIDE(BeneficioNeto, ActivoTotal, 0)
+
+// Return on Equity (ROE)
+ROE = 
+VAR BeneficioNeto = [Resultado del Ejercicio]
+VAR PatrimonioNeto = CALCULATE([Saldo Balance (€)], vw_balance_situacion[grupo] = "1")
+RETURN DIVIDE(BeneficioNeto, PatrimonioNeto, 0)
+
+// Current Ratio (Ratio de Liquidez)
+Ratio Liquidez = 
+VAR ActivoCorriente = 
+    CALCULATE(
+        [Saldo Balance (€)], 
+        vw_balance_situacion[grupo] IN {"3", "4", "5"}, 
+        vw_balance_situacion[masa_patrimonial] = "ACTIVO"
+    )
+VAR PasivoCorriente = 
+    CALCULATE(
+        [Saldo Balance (€)], 
+        vw_balance_situacion[grupo] IN {"4", "5"}, 
+        vw_balance_situacion[masa_patrimonial] = "PASIVO_Y_PN"
+    )
+RETURN DIVIDE(ActivoCorriente, PasivoCorriente, 0)
 ---
 
 ## 🚀 **Key Visuals & Features**

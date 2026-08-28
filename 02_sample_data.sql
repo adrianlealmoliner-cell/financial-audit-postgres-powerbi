@@ -17,3 +17,14 @@ INSERT INTO Diario_Contable (num_asiento, fecha, codigo_cuenta, debe, haber, id_
 (2, '2026-10-05', '6000000', 500.00, 0.00, 2, 'Compra de material de almacén'),
 (2, '2026-10-05', '4720000', 105.00, 0.00, 2, '21% IVA Soportado'),
 (2, '2026-10-05', '4000000', 0.00, 605.00, 2, 'Factura n/contra');
+
+-- Asiento 5: Ingresos por Consultoría (Para revertir ROE y ROA negativos)
+INSERT INTO Diario_Contable (num_asiento, codigo_cuenta, debe, haber) VALUES
+(5, '4300000', 18150, 0),    -- Clientes (Aumenta Activo Corriente en 18.150 €)
+(5, '7000000', 0, 15000),    -- Prestación de servicios (Genera Beneficio de 15.000 €)
+(5, '4770000', 0, 3150);     -- IVA Repercutido (Aumenta Pasivo Corriente en 3.150 €)
+
+-- Asiento 6: Préstamo Bancario a Corto Plazo (Para bajar la liquidez a la tierra)
+INSERT INTO Diario_Contable (num_asiento, codigo_cuenta, debe, haber) VALUES
+(6, '5720000', 25000, 0),    -- Bancos (Aumenta Activo Corriente en 25.000 €)
+(6, '5200000', 0, 25000);    -- Deudas a c/p con entidades de crédito (Aumenta Pasivo Corriente en 25.000 €)
